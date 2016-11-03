@@ -1,0 +1,49 @@
+{
+  "name": "alexa-lunch-train",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Let Alexa tell your Slack Lunch Train bot to schedule lunch",
+  "main": "build/skill.js",
+  "scripts": {
+    "build": "babel src -s -d build",
+    "clean": "rm -rf build",
+    "test": "jest"
+  },
+  "babel": {
+    "presets": [
+      "es2015-node4",
+      "es2017"
+    ],
+    "plugins": [
+      "transform-object-rest-spread",
+      "transform-flow-strip-types"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ide/alexa-lunch-train.git"
+  },
+  "keywords": [
+    "alexa",
+    "lunch",
+    "slack"
+  ],
+  "author": "James Ide",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ide/alexa-lunch-train/issues"
+  },
+  "homepage": "https://github.com/ide/alexa-lunch-train#readme",
+  "dependencies": {
+    "alexa-sdk": "^1.0.6",
+    "source-map-support": "^0.4.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.18.0",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
+    "babel-preset-es2015-node4": "^2.1.0",
+    "babel-preset-es2017": "^6.16.0",
+    "jest": "^16.0.2"
+  }
+}

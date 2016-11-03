@@ -1,0 +1,30 @@
+{
+  "intents": [
+    {
+      "intent": "ScheduleLunch",
+      "slots": [
+        {
+          "name": "Location",
+          "type": "RESTAURANT"
+        },
+        {
+          "name": "Time",
+          "type": "AMAZON.TIME"
+        },
+        {
+          "name": "Duration",
+          "type": "AMAZON.DURATION"
+        }
+      ]
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    }
+  ]
+}

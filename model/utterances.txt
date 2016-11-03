@@ -1,0 +1,22 @@
+ScheduleLunch tell us to get lunch at {Location}
+ScheduleLunch tell us to get lunch at {Location} at {Time}
+ScheduleLunch tell us to get lunch at {Location} in {Duration}
+ScheduleLunch tell us to get lunch in {Duration}
+ScheduleLunch tell us to get lunch in {Duration} at {Location}
+ScheduleLunch tell us to get lunch at {Time}
+ScheduleLunch tell us to get lunch at {Time} at {Location}
+
+ScheduleLunch tell us to go to {Location}
+ScheduleLunch tell us to go to {Location} at {Time}
+ScheduleLunch tell us to go to {Location} in {Duration}
+ScheduleLunch tell us at {Time} to go to {Location}
+ScheduleLunch tell us in {Duration} to go to {Location}
+
+ScheduleLunch schedule lunch at {Location}
+ScheduleLunch schedule lunch at {Location} at {Time}
+ScheduleLunch schedule lunch at {Location} in {Duration}
+ScheduleLunch schedule lunch in {Duration}
+ScheduleLunch schedule lunch in {Duration} at {Location}
+ScheduleLunch schedule lunch at {Time}
+ScheduleLunch schedule lunch for {Time}
+ScheduleLunch schedule lunch at {Time} at {Location}
