@@ -3,10 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "description": "Let Alexa tell your Slack Lunch Train bot to schedule lunch",
-  "main": "build/skill.js",
+  "main": "build/index.js",
+  "files": "build",
   "scripts": {
     "build": "babel src -s -d build",
     "clean": "rm -rf build",
+    "deploy": "tools/deploy.sh",
     "test": "jest"
   },
   "babel": {

@@ -14,7 +14,7 @@ export function startSessionAsync(
 }
 
 export function endSessionAsync(
-  request: Alexa.Request,
+  request: Alexa.SessionEndedRequest,
   session: Alexa.Session,
 ): Result {
   console.log(`Ending session: ${session.sessionId}`);
@@ -26,20 +26,35 @@ export function endSessionAsync(
 }
 
 export async function launchAsync(
-  request: Alexa.Request,
+  request: Alexa.LaunchRequest,
   session: Alexa.Session,
 ): Promise<Result> {
   return {
     response: {
-      shouldEndSession: false,
+      outputSpeech: {
+        type: 'PlainText',
+        text: 'Tell me when and where you want to eat.',
+      },
+      shouldEndSession: true,
     },
   };
 }
 
 export async function handleIntentAsync(
-  request: Alexa.Request,
+  request: Alexa.IntentRequest,
   session: Alexa.Session,
 ): Promise<Result> {
+  let { intent } = request;
+  switch (intent.name) {
+    case 'ScheduleLunch':
+      break;
+    case 'AMAZON.CancelIntent':
+      break;
+    case 'AMAZON.StopIntent':
+      break;
+    case 'AMAZON.HelpIntent':
+      break;
+  }
 
   return {
     sessionAttributes: {},

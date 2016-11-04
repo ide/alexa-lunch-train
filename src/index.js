@@ -33,7 +33,7 @@ export function handler(
   callback: Callback,
 ): void {
   try {
-    handleRequestAsync(event, context).then(
+    handleEventAsync(event, context).then(
       response => { callback(null, response); },
       error => { callback(error); },
     );
@@ -42,7 +42,7 @@ export function handler(
   }
 };
 
-async function handleRequestAsync(
+async function handleEventAsync(
   event: Event,
   context: Object,
 ): Promise<Response> {

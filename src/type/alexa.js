@@ -46,38 +46,38 @@ export type Request =
   IntentRequest |
   SessionEndedRequest;
 
-type BaseRequest = {|
-  type: string,
+type BaseRequest = {
+  // type: string,
   requestId: string,
   timestamp: string,
   locale: string,
-|};
+};
 
-export type LaunchRequest = BaseRequest & {|
+export type LaunchRequest = BaseRequest & {
   type: 'LaunchRequest',
-|};
+};
 
-export type IntentRequest = BaseRequest & {|
+export type IntentRequest = BaseRequest & {
   type: 'IntentRequest',
   intent: {|
     name: 'string',
     slots: {[name: string]: Slot},
   |},
-|};
+};
 
 export type Slot = {|
   name: string,
   value: string,
 |};
 
-export type SessionEndedRequest = BaseRequest & {|
+export type SessionEndedRequest = BaseRequest & {
   type: 'SessionEndedRequest',
   reason: 'USER_INITIATED' | 'ERROR' | 'EXCEEDED_MAX_REPROMPTS',
   error: {|
     type: 'INVALID_RESPONSE' | 'DEVICE_COMMUNICATION_ERROR' | 'INTERNAL_ERROR',
     message: string,
   |},
-|};
+};
 
 // Responses
 
