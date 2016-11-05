@@ -1,0 +1,10 @@
+a snack
+breakfast
+brunch
+dessert
+dinner
+elevenses
+lunch
+snacks
+supper
+tea
