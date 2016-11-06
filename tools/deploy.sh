@@ -18,7 +18,7 @@ yarn --production --pure-lockfile
 printf "\n"
 
 printf "Creating deployment package...\n"
-zip -r $LAMBDA_PACKAGE build node_modules package.json LICENSE
+zip -r $LAMBDA_PACKAGE -q -9 build node_modules package.json LICENSE
 printf "\n"
 
 printf "Uploading deployment package to update Lambda function...\n"

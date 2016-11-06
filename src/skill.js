@@ -1,4 +1,6 @@
 // @flow
+import moment from 'moment';
+
 import * as Alexa from './type/alexa';
 
 type Result = {
@@ -35,7 +37,13 @@ export async function launchAsync(
         type: 'PlainText',
         text: 'Tell me when and where you want to eat.',
       },
-      shouldEndSession: true,
+      reprompt: {
+        outputSpeech: {
+          type: 'PlainText',
+          text: `I didn't get that. Say: remind me to get lunch at one thirty.`,
+        },
+      },
+      shouldEndSession: false,
     },
   };
 }
@@ -47,144 +55,82 @@ export async function handleIntentAsync(
   let { intent } = request;
   switch (intent.name) {
     case 'ScheduleLunch':
-      break;
+      return await scheduleLunchAsync(request, session);
     case 'AMAZON.CancelIntent':
-      break;
     case 'AMAZON.StopIntent':
-      break;
+      return await cancelLunchAsync(request, session);
     case 'AMAZON.HelpIntent':
-      break;
+      return provideHelp();
+    default:
+      throw new Error(`Unknown intent: ${intent.name}`);
+  }
+}
+
+async function scheduleLunchAsync(
+  request: Alexa.IntentRequest,
+  session: Alexa.Session,
+): Promise<Result> {
+  let {
+    Location: { value: location },
+    Time: { value: time },
+    Duration: { value: duration },
+  } = request.intent.slots;
+
+  if (!time) {
+    if (!duration) {
+      duration = 'PT15M'; // 15 minutes
+    }
+    let scheduledMoment = moment.interval(duration).end();
+    time = scheduledMoment.format('H:mm A');
   }
 
+
+  // TODO: Schedule lunch with Slack
+
+  let speechText = 'oh';
+  if (location) {
+    if (time) {
+      speechText = `OK, I'll remind you to go to ${location} at ${time}.`;
+    } else if (duration) {
+      speechText = `OK, I'll remind you to go to ${location} in ${duration}.`;
+    } else {
+      speechText = `OK, I'll remind you to go to ${location} in fifteen minutes.`;
+    }
+  }
+  console.log(speechText);
+
   return {
-    sessionAttributes: {},
     response: {
       outputSpeech: {
         type: 'PlainText',
-        text: 'Hi James',
-      },
+        text: speechText,
+      }
     },
   };
 }
 
-//
-// // --------------- Functions that control the skill's behavior -----------------------
-//
-// function getWelcomeResponse(callback) {
-//     // If we wanted to initialize the session to have some attributes we could add those here.
-//     const sessionAttributes = {};
-//     const cardTitle = 'Welcome';
-//     const speechOutput = 'Welcome to the Alexa Skills Kit sample. ' +
-//         'Please tell me your favorite color by saying, my favorite color is red';
-//     // If the user either does not reply to the welcome message or says something that is not
-//     // understood, they will be prompted again with this text.
-//     const repromptText = 'Please tell me your favorite color by saying, ' +
-//         'my favorite color is red';
-//     const shouldEndSession = false;
-//
-//     callback(sessionAttributes,
-//         buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
-// }
-//
-// function createFavoriteColorAttributes(favoriteColor) {
-//     return {
-//         favoriteColor,
-//     };
-// }
-//
-// /**
-//  * Sets the color in the session and prepares the speech to reply to the user.
-//  */
-// function setColorInSession(intent, session, callback) {
-//     const cardTitle = intent.name;
-//     const favoriteColorSlot = intent.slots.Color;
-//     let repromptText = '';
-//     let sessionAttributes = {};
-//     const shouldEndSession = false;
-//     let speechOutput = '';
-//
-//     if (favoriteColorSlot) {
-//         const favoriteColor = favoriteColorSlot.value;
-//         sessionAttributes = createFavoriteColorAttributes(favoriteColor);
-//         speechOutput = `I now know your favorite color is ${favoriteColor}. You can ask me ` +
-//             "your favorite color by saying, what's my favorite color?";
-//         repromptText = "You can ask me your favorite color by saying, what's my favorite color?";
-//     } else {
-//         speechOutput = "I'm not sure what your favorite color is. Please try again.";
-//         repromptText = "I'm not sure what your favorite color is. You can tell me your " +
-//             'favorite color by saying, my favorite color is red';
-//     }
-//
-//     callback(sessionAttributes,
-//          buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
-// }
-//
-// function getColorFromSession(intent, session, callback) {
-//     let favoriteColor;
-//     const repromptText = null;
-//     const sessionAttributes = {};
-//     let shouldEndSession = false;
-//     let speechOutput = '';
-//
-//     if (session.attributes) {
-//         favoriteColor = session.attributes.favoriteColor;
-//     }
-//
-//     if (favoriteColor) {
-//         speechOutput = `Your favorite color is ${favoriteColor}. Goodbye.`;
-//         shouldEndSession = true;
-//     } else {
-//         speechOutput = "I'm not sure what your favorite color is, you can say, my favorite color " +
-//             ' is red';
-//     }
-//
-//     // Setting repromptText to null signifies that we do not want to reprompt the user.
-//     // If the user does not respond or says something that is not understood, the session
-//     // will end.
-//     callback(sessionAttributes,
-//          buildSpeechletResponse(intent.name, speechOutput, repromptText, shouldEndSession));
-// }
+async function cancelLunchAsync(
+  request: Alexa.IntentRequest,
+  session: Alexa.Session,
+): Promise<Result> {
+  return {
+    response: {
+      outputSpeech: {
+        type: 'PlainText',
+        text: `OK, let me know whenever you want to plan lunch again.`,
+      },
+    },
+    shouldEndSession: true,
+  };
+}
 
-
-// --------------- Events -----------------------
-
-/**
- * Called when the session starts.
- */
-// function onSessionStarted(sessionStartedRequest, session) {
-//     console.log(`onSessionStarted requestId=${sessionStartedRequest.requestId}, sessionId=${session.sessionId}`);
-// }
-
-/**
- * Called when the user launches the skill without specifying what they want.
- */
-// function onLaunch(launchRequest, session, callback) {
-//     console.log(`onLaunch requestId=${launchRequest.requestId}, sessionId=${session.sessionId}`);
-//
-//     // Dispatch to your skill's launch.
-//     getWelcomeResponse(callback);
-// }
-
-/**
- * Called when the user specifies an intent for this skill.
- */
-// function onIntent(intentRequest, session, callback) {
-//     console.log(`onIntent requestId=${intentRequest.requestId}, sessionId=${session.sessionId}`);
-//
-//     const intent = intentRequest.intent;
-//     const intentName = intentRequest.intent.name;
-//
-//     // Dispatch to your skill's intent handlers
-//     if (intentName === 'MyColorIsIntent') {
-//         setColorInSession(intent, session, callback);
-//     } else if (intentName === 'WhatsMyColorIntent') {
-//         getColorFromSession(intent, session, callback);
-//     } else if (intentName === 'AMAZON.HelpIntent') {
-//         getWelcomeResponse(callback);
-//     } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
-//         handleSessionEndRequest(callback);
-//     } else {
-//         throw new Error('Invalid intent');
-//     }
-// }
-//
+function provideHelp(): Result {
+  return {
+    response: {
+      outputSpeech: {
+        type: 'PlainText',
+        text: `I'll remind you in Slack to eat. For example, say: remind me to get lunch at one thirty.`,
+      },
+    },
+  };
+}

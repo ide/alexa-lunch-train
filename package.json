@@ -37,8 +37,11 @@
   },
   "homepage": "https://github.com/ide/alexa-lunch-train#readme",
   "dependencies": {
+    "@slack/client": "^3.6.0",
     "alexa-sdk": "^1.0.6",
     "instapromise": "^2.0.7",
+    "moment": "^2.15.2",
+    "moment-interval": "^0.2.1",
     "source-map-support": "^0.4.6",
     "yelp": "^1.0.1"
   },
